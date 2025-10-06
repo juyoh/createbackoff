@@ -1,0 +1,13 @@
+{
+  "block.createbackoff.resistor": "Entity Resistor",
+  "item.createbackoff.legal_paper": "Legal Paper",
+  "item.createbackoff.restraining_order": "Restraining Order",
+  "tooltip.createbackoff.restraining_order.empty": "No entity bound",
+  "tooltip.createbackoff.restraining_order.bound": "Legally bound to entity: ",
+  "tooltip.createbackoff.restraining_order.wildcard": "All entities except owner",
+  "tooltip.createbackoff.resistor.bound": "Filtered Resistor to entity",
+  "tooltip.createbackoff.resistor.goggles": "Resistor info:",
+  "create.marker.too_far": "Targeted position is too far from here",
+  "create.marker.success": "Successfully bound to targeted position",
+  "create.marker.set": "Targeted position selected"
+}
