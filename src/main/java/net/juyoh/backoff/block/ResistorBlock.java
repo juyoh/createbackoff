@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -99,7 +100,7 @@ public class ResistorBlock extends KineticBlock implements IBE<ResistorBlockEnti
                 return ItemInteractionResult.FAIL;
             }
             //if the filter is already set, give it back
-            if (!Objects.equals(blockEntity.filter, "") && !player.isCreative()) {
+            if (!Objects.equals(blockEntity.filter, "*") && !player.isCreative()) {
                 blockEntity.dropStack();
             }
             if (stack.has(ModItemComponents.ENTITY_COMPONENT)) {
@@ -117,6 +118,32 @@ public class ResistorBlock extends KineticBlock implements IBE<ResistorBlockEnti
             }
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (player.isCrouching()) {
+            ResistorBlockEntity blockEntity = ((ResistorBlockEntity) level.getBlockEntity(pos));
+            if (blockEntity.shouldResistEntity(player)) {
+                player.displayClientMessage(Component.translatable("tooltip.createbackoff.resistor.deny").withStyle(ChatFormatting.RED), true);
+                return InteractionResult.FAIL;
+            }
+            //if the filter is already set, give it back
+            if (!Objects.equals(blockEntity.filter, "*") && !player.isCreative()) {
+                blockEntity.dropStack();
+            }
+            player.displayClientMessage(Component.translatable("tooltip.createbackoff.restraining_order.wildcard").withStyle(ChatFormatting.GREEN), true);
+            String newFilter = "*";
+            blockEntity.filter = newFilter;
+            level.playSound(null, pos, SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 1, 1);
+            if (player.level().isClientSide) {
+                CatnipServices.NETWORK.sendToServer(new ResistorConfigPacket(pos.getX(), pos.getY(), pos.getZ(), newFilter));
+            } else {
+                withBlockEntityDo(level, pos, SyncedBlockEntity::notifyUpdate);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
     @Override

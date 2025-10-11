@@ -4,6 +4,7 @@ import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.element.ElementLink;
+import net.createmod.ponder.api.element.EntityElement;
 import net.createmod.ponder.api.element.ParrotElement;
 import net.createmod.ponder.api.element.ParrotPose;
 import net.createmod.ponder.api.scene.SceneBuilder;
@@ -12,6 +13,8 @@ import net.createmod.ponder.api.scene.Selection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.AABB;
@@ -201,6 +204,7 @@ public class ResistorScenes {
         BlockPos resistorPos = util.grid().at(2, 3, 3);
         BlockPos birbPos = util.grid().at(0, 7, 3);
         BlockPos itemPos = util.grid().at(1, 8, 2);
+        Selection barrierSelection = util.select().fromTo(0, 4, 0, 6, 4, 6);
         Selection resistorSelection = util.select().position(resistorPos);
         Selection resistorSelectionSlow = util.select().position(resistorPos);
 
@@ -214,6 +218,7 @@ public class ResistorScenes {
         scene.idle(10);
 
         scene.world().showSection(resistorSelection, Direction.SOUTH);
+        scene.world().showSection(barrierSelection, Direction.DOWN);
 
         scene.idle(10);
 
@@ -247,11 +252,13 @@ public class ResistorScenes {
 
         ElementLink<ParrotElement> flappyBirb1 = scene.special().createBirb(util.vector().blockSurface(birbPos, Direction.UP), ParrotPose.FlappyPose::new);
         scene.special().moveParrot(flappyBirb1, util.vector().of(0, -2, 0), 20);
-        scene.world().createItemEntity(itemPos.getBottomCenter(), new Vec3(0, -0.2, 0), new ItemStack(Items.COBBLESTONE).copyWithCount(32));
+        ElementLink<EntityElement> itemElement = scene.world().createItemEntity(itemPos.getBottomCenter(), new Vec3(0, -0.2, 0), new ItemStack(Items.COBBLESTONE).copyWithCount(32));
 
         scene.idleSeconds(4);
 
         scene.special().hideElement(flappyBirb1, Direction.UP);
+        scene.idle(10);
+        scene.world().modifyEntities(ItemEntity.class, Entity::discard);
 
         scene.addKeyframe();
         scene.markAsFinished();
