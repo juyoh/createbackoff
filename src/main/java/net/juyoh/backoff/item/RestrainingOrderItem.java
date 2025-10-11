@@ -1,6 +1,5 @@
 package net.juyoh.backoff.item;
 
-import net.juyoh.backoff.CreateBackOff;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

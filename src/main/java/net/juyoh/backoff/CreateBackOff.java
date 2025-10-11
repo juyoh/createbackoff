@@ -2,23 +2,23 @@ package net.juyoh.backoff;
 
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.data.TagGen;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.entry.ItemEntry;
 import net.createmod.catnip.lang.FontHelper;
 import net.juyoh.backoff.block.ModBlockEntities;
 import net.juyoh.backoff.block.ResistorBlock;
-import net.juyoh.backoff.block.ResistorBlockEntity;
 import net.juyoh.backoff.config.ModConfigs;
 import net.juyoh.backoff.config.ModStress;
-import net.juyoh.backoff.item.LegalPaperItem;
-import net.juyoh.backoff.item.ModItemComponents;
-import net.juyoh.backoff.item.RestrainingOrderItem;
-import net.minecraft.client.renderer.RenderType;
+import net.juyoh.backoff.item.*;
+import net.juyoh.backoff.network.ResistorConfigHandler;
+import net.juyoh.backoff.network.ResistorConfigPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -26,19 +26,22 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.entity.living.BabyEntitySpawnEvent;
-import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(CreateBackOff.MODID)
@@ -59,14 +62,18 @@ public class CreateBackOff {
         );
     }
     public static final BlockEntry<ResistorBlock> RESISTOR = REGISTRATE.block("resistor", ResistorBlock::new)
-            .transform(ModStress.setImpact(8))
-            .addLayer(() -> RenderType::cutoutMipped)
+            .initialProperties(SharedProperties::stone)
+            .transform(ModStress.setImpact(16.0))
+            .transform(TagGen.pickaxeOnly())
+            .item(ResistorBlockItem::new)
+            .transform(customItemModel())
             .register();
 
-    public static final DeferredItem<BlockItem> RESISTOR_ITEM = ITEMS.registerSimpleBlockItem("resistor", RESISTOR);
-
-    public static final DeferredItem<Item> LEGAL_PAPER = ITEMS.registerItem("legal_paper", LegalPaperItem::new, new Item.Properties().stacksTo(16));
-    public static final DeferredItem<RestrainingOrderItem> RESTRAINING_ORDER = ITEMS.registerItem("restraining_order", RestrainingOrderItem::new, new Item.Properties().stacksTo(16));
+    public static final ItemEntry<LegalPaperItem> LEGAL_PAPER = REGISTRATE.item("legal_paper", LegalPaperItem::new)
+            .properties(properties -> new Item.Properties().stacksTo(16)).register();
+    public static final ItemEntry<RestrainingOrderItem> RESTRAINING_ORDER = REGISTRATE.item("restraining_order", RestrainingOrderItem::new)
+            .properties(properties -> new Item.Properties().stacksTo(1))
+            .removeTab(ModTabs.BACK_OFF.getKey()).register();
 
     public static Map<BlockPos, ResourceKey<Level>> resistors = new HashMap<>();
 
@@ -93,7 +100,6 @@ public class CreateBackOff {
         // Note that this is necessary if and only if we want *this* class (CreateBackOff) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
-
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -107,27 +113,27 @@ public class CreateBackOff {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
     }
+    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD)
+    public static class ServerModEvents {
+        @SubscribeEvent
+        public static void registerPayloads(RegisterPayloadHandlersEvent event) {
+            PayloadRegistrar registrar = event.registrar("1");
+            registrar.playToServer(
+                    ResistorConfigPacket.TYPE,
+                    ResistorConfigPacket.STREAM_CODEC,
+                    new ResistorConfigHandler()
+            );
+        }
+    }
+
     @SubscribeEvent
     public void onWorldLeave(LevelEvent.Unload event) {
         resistors = new HashMap<>();
     }
-    //@SubscribeEvent
-    //public void onMobSpawn(MobSpawnEvent.SpawnPlacementCheck event) {
-    //    BlockPos startPos = event.getPos();
-    //    int maxSize = ResistorBlockEntity.getMaxSize();
-    //    for (int x = -maxSize; x < maxSize; x++) {
-    //        for (int z = -maxSize; z < maxSize; z++) {
-    //            for (int y = -maxSize; y < maxSize; y++) {
-    //                BlockEntity entity = event.getLevel().getBlockEntity(startPos.offset(x, y, z));
-    //                if (entity instanceof ResistorBlockEntity) {
-    //                    if (((ResistorBlockEntity) entity).isInside(startPos.getCenter())) {
-    //                        event.setResult(MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
-    //                        break;
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-//
-    //}
+    public static BlockEntity getBlockEntityAt(BlockPos pos, Level level) {
+        if (!level.isLoaded(pos)) {
+            return null;
+        }
+        return level.getBlockEntity(pos);
+    }
 }

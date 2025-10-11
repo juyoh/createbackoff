@@ -1,13 +1,28 @@
 {
   "block.createbackoff.resistor": "Entity Resistor",
+
   "item.createbackoff.legal_paper": "Legal Paper",
   "item.createbackoff.restraining_order": "Restraining Order",
+
   "tooltip.createbackoff.restraining_order.empty": "No entity bound",
   "tooltip.createbackoff.restraining_order.bound": "Legally bound to entity: ",
   "tooltip.createbackoff.restraining_order.wildcard": "All entities except owner",
-  "tooltip.createbackoff.resistor.bound": "Filtered Resistor to entity",
-  "tooltip.createbackoff.resistor.goggles": "Resistor info:",
-  "create.marker.too_far": "Targeted position is too far from here",
-  "create.marker.success": "Successfully bound to targeted position",
-  "create.marker.set": "Targeted position selected"
+  "tooltip.createbackoff.resistor.bound": "Filtered Resistor to deter entity",
+  "tooltip.createbackoff.resistor.deny": "You are not the owner of this Resistor",
+  "tooltip.createbackoff.resistor.goggles": "Resistor Deters:",
+
+  "createbackoff.ponder.resistor_intro.header": "Resisting Entities",
+  "createbackoff.ponder.resistor_intro.text_1": "The Resistor uses rotational force to repel entities",
+  "createbackoff.ponder.resistor_intro.text_2": "It is powered from below",
+  "createbackoff.ponder.resistor_intro.text_3": "When set up correctly, the Resistor can block entities",
+
+  "createbackoff.ponder.resistor_speed.header": "Resistor's Size",
+  "createbackoff.ponder.resistor_speed.text_1": "The bounding box's size is tied to the Resistor's speed",
+  "createbackoff.ponder.resistor_speed.text_2": "Increasing the speed...",
+  "createbackoff.ponder.resistor_speed.text_3": "Increases the size of it's influence",
+
+  "createbackoff.ponder.resistor_filter.header": "Resistor filtering",
+  "createbackoff.ponder.resistor_filter.text_1": "By default, the Resistor won't block anything",
+  "createbackoff.ponder.resistor_filter.text_2": "Use Legal Paper on a mob to add it's name to the filter",
+  "createbackoff.ponder.resistor_filter.text_3": "Then use the Restraining Order on the Resistor to configure it"
 }

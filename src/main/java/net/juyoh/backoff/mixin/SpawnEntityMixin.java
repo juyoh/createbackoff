@@ -5,7 +5,9 @@ import net.juyoh.backoff.block.ResistorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -22,7 +24,7 @@ public class SpawnEntityMixin {
             if (CreateBackOff.resistors.get(pos1) != ((Level) level).dimension()) {
                 return;
             }
-            BlockEntity entity = level.getBlockEntity(pos1);
+            BlockEntity entity = CreateBackOff.getBlockEntityAt(pos1, (Level) level);
             if (!(entity instanceof ResistorBlockEntity)) {
                 return;
             }

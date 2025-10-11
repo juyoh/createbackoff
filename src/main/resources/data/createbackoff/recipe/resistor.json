@@ -1,0 +1,31 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "create:brass_ingot"
+    },
+    "A": {
+      "item": "create:brass_casing"
+    },
+    "S": {
+      "item": "minecraft:redstone_block"
+    },
+    "N": {
+      "item": "minecraft:slime_ball"
+    }
+  },
+  "pattern": [
+    "BBBBB",
+    "BANAB",
+    "BNSNB",
+    "BANAB",
+    "BBBBB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createbackoff:resistor"
+  },
+  "show_notification": false
+}

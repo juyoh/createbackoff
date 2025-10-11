@@ -3,6 +3,7 @@
   "package": "net.juyoh.backoff.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "IsBlockInteractableMixin",
     "IsBlockCollidableMixin",
     "SpawnEntityMixin"
   ],

@@ -1,7 +1,7 @@
 package net.juyoh.backoff;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
+import net.createmod.ponder.foundation.PonderIndex;
+import net.juyoh.backoff.ponder.ModPonders;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -26,8 +26,6 @@ public class CreateBackOffClient {
 
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
-        // Some client setup code
-        CreateBackOff.LOGGER.info("HELLO FROM CLIENT SETUP");
-        CreateBackOff.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        PonderIndex.addPlugin(new ModPonders());
     }
 }

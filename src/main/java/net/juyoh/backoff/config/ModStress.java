@@ -9,7 +9,6 @@ import net.createmod.catnip.registry.RegisteredObjectsHelper;
 import net.juyoh.backoff.CreateBackOff;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.Builder;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +18,6 @@ import java.util.Map;
 import java.util.function.DoubleSupplier;
 
 public class ModStress extends ConfigBase {
-    // bump this version to reset configured values.
     private static final int VERSION = 1;
 
     // IDs need to be used since configs load before registration
@@ -27,7 +25,7 @@ public class ModStress extends ConfigBase {
     private static final Object2DoubleMap<ResourceLocation> DEFAULT_IMPACTS = new Object2DoubleOpenHashMap<>();
     private static final Object2DoubleMap<ResourceLocation> DEFAULT_CAPACITIES = new Object2DoubleOpenHashMap<>();
 
-    protected final Map<ResourceLocation, ModConfigSpec.ConfigValue<Double>> capacities = new HashMap<>();
+    protected final Map<ResourceLocation, ConfigValue<Double>> capacities = new HashMap<>();
     protected final Map<ResourceLocation, ConfigValue<Double>> impacts = new HashMap<>();
 
     @Override
@@ -85,7 +83,7 @@ public class ModStress extends ConfigBase {
     }
     private static void assertFromThisMod(BlockBuilder<?, ?> builder) {
         if (!builder.getOwner().getModid().equals(CreateBackOff.MODID)) {
-            throw new IllegalStateException("Non-Create blocks cannot be added to Create: Back Off!'s config.");
+            throw new IllegalStateException("Non-Create blocks cannot be added to Create: Back Off's config.");
         }
     }
 

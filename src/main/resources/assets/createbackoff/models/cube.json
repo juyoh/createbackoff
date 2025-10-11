@@ -1,0 +1,25 @@
+{
+	"format_version": "1.21.6",
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"0": "createbackoff:block/resistor_bit",
+		"particle": "createbackoff:block/resistor_bit"
+	},
+	"elements": [
+		{
+			"name": "Axis",
+			"from": [5.5, 6, 5.5],
+			"to": [10.5, 11, 10.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7.5, 14, 8.5]},
+			"faces": {
+				"north": {"uv": [6, 0, 10, 5], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [6, 0, 10, 5], "rotation": 180, "texture": "#0"},
+				"south": {"uv": [6, 0, 10, 5], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [6, 0, 10, 5], "rotation": 180, "texture": "#0"},
+				"up": {"uv": [6, 0, 10, 5], "texture": "#0"},
+				"down": {"uv": [6, 0, 10, 5], "texture": "#0"}
+			}
+		}
+	]
+}

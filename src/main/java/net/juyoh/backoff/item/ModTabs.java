@@ -1,5 +1,6 @@
-package net.juyoh.backoff;
+package net.juyoh.backoff.item;
 
+import net.juyoh.backoff.CreateBackOff;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -16,10 +17,7 @@ public class ModTabs {
             () -> CreativeModeTab.builder()
                     .title(Component.literal("Create: Back Off!"))
                     .icon(CreateBackOff.RESISTOR::asStack)
-                    .displayItems(List.of(
-                            CreateBackOff.RESISTOR_ITEM,
-                            CreateBackOff.LEGAL_PAPER
-                    ))
+                    .displayItems(List.of())
                     .build());
 
     public static void register(IEventBus modEventBus) {
