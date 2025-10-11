@@ -22,7 +22,7 @@
   "createbackoff.ponder.resistor_speed.text_3": "Increases the size of it's influence",
 
   "createbackoff.ponder.resistor_filter.header": "Resistor filtering",
-  "createbackoff.ponder.resistor_filter.text_1": "By default, the Resistor won't block anything",
+  "createbackoff.ponder.resistor_filter.text_1": "By default, the Resistor will block everything except the Owner",
   "createbackoff.ponder.resistor_filter.text_2": "Use Legal Paper on a mob to add it's name to the filter",
   "createbackoff.ponder.resistor_filter.text_3": "Then use the Restraining Order on the Resistor to configure it"
 }

@@ -26,9 +26,7 @@ public class ResistorBlockItem extends BlockItem {
                 String filter = component.copyTag().getString("filter");
                 if (filter.equals("*")) {
                     tooltipComponents.add(Component.translatable("tooltip.createbackoff.restraining_order.wildcard").withStyle(ChatFormatting.GREEN));
-                } else if (filter.isEmpty()){
-                    tooltipComponents.add(Component.translatable("tooltip.createbackoff.restraining_order.empty"));
-                } else  {
+                } else {
                     tooltipComponents.add(Component.translatable("tooltip.createbackoff.restraining_order.bound").withStyle(ChatFormatting.GOLD)
                             .append(Component.literal(filter)));
                 }

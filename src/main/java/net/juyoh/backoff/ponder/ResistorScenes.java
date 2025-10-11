@@ -12,6 +12,8 @@ import net.createmod.ponder.api.scene.Selection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -197,7 +199,8 @@ public class ResistorScenes {
         scene.showBasePlate();
 
         BlockPos resistorPos = util.grid().at(2, 3, 3);
-        BlockPos birbPos = util.grid().at(0, 2, 3);
+        BlockPos birbPos = util.grid().at(0, 7, 3);
+        BlockPos itemPos = util.grid().at(1, 8, 2);
         Selection resistorSelection = util.select().position(resistorPos);
         Selection resistorSelectionSlow = util.select().position(resistorPos);
 
@@ -215,7 +218,7 @@ public class ResistorScenes {
         scene.idle(10);
 
         scene.overlay().showOutlineWithText(resistorSelection, 140)
-                .text("By default, the Resistor won't block anything")
+                .text("By default, the Resistor will block everything except the Owner")
                 .pointAt(util.vector().blockSurface(resistorPos, Direction.WEST)
                         .add(-.5, .4, 0))
                 .placeNearTarget();
@@ -242,8 +245,9 @@ public class ResistorScenes {
 
         scene.addKeyframe();
 
-        ElementLink<ParrotElement> flappyBirb1 = scene.special().createBirb(util.vector().blockSurface(birbPos.above(5), Direction.UP).subtract(0, 0.3, 0), ParrotPose.FlappyPose::new);
-        scene.special().moveParrot(flappyBirb1, util.vector().of(0, -5, 0), 40);
+        ElementLink<ParrotElement> flappyBirb1 = scene.special().createBirb(util.vector().blockSurface(birbPos, Direction.UP), ParrotPose.FlappyPose::new);
+        scene.special().moveParrot(flappyBirb1, util.vector().of(0, -2, 0), 20);
+        scene.world().createItemEntity(itemPos.getBottomCenter(), new Vec3(0, -0.2, 0), new ItemStack(Items.COBBLESTONE).copyWithCount(32));
 
         scene.idleSeconds(4);
 

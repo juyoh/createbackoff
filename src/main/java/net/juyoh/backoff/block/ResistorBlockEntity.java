@@ -38,7 +38,7 @@ public class ResistorBlockEntity extends KineticBlockEntity {
         super(typeIn, pos, state);
     }
 
-    String filter = "";
+    String filter = "*";
     UUID owner;
     public boolean isColliding;
 
@@ -95,9 +95,7 @@ public class ResistorBlockEntity extends KineticBlockEntity {
     }
 
     public MutableComponent getTooltip() {
-        if (filter.equals("")) {
-            return (Component.translatable("tooltip.createbackoff.restraining_order.empty").withStyle(ChatFormatting.GREEN));
-        } else if (Objects.equals(filter, "*")) {
+        if (Objects.equals(filter, "*")) {
             return (Component.translatable("tooltip.createbackoff.restraining_order.wildcard"));
         } else {
             return (Component.translatable("tooltip.createbackoff.restraining_order.bound").withStyle(ChatFormatting.GOLD)
@@ -118,7 +116,7 @@ public class ResistorBlockEntity extends KineticBlockEntity {
     }
 
     public void dropStack() {
-        if (!Objects.equals(filter, "")) {
+        if (!Objects.equals(filter, "*")) {
             ItemStack stack =  new ItemStack(CreateBackOff.RESTRAINING_ORDER.asItem());
             stack.setCount(1);
             stack.set(ModItemComponents.ENTITY_COMPONENT, new EntityTypeComponent(filter));
@@ -167,7 +165,7 @@ public class ResistorBlockEntity extends KineticBlockEntity {
     }
 
     public void resetFilter() {
-        filter = "";
+        filter = "*";
     }
 
     public boolean isInside(Vec3 pos) {

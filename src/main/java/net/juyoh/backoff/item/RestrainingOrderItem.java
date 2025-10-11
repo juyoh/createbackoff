@@ -20,27 +20,8 @@ public class RestrainingOrderItem extends Item {
         super(properties);
     }
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        if (player.isCrouching()) {
-            ItemStack stack = player.getItemInHand(usedHand);
-            if (!stack.has(ModItemComponents.ENTITY_COMPONENT)) {
-                return InteractionResultHolder.fail(stack);
-            }
-            stack.set(ModItemComponents.ENTITY_COMPONENT, new EntityTypeComponent("*"));
-            player.setItemInHand(usedHand, stack);
-            player.displayClientMessage(RestrainingOrderItem.getTooltip(stack), true);
-
-            player.playSound(SoundEvents.VILLAGER_WORK_ARMORER);
-
-            return InteractionResultHolder.success(stack);
-        }
-        return super.use(level, player, usedHand);
-    }
     public static MutableComponent getTooltip(ItemStack stack) {
-        if (!stack.has(ModItemComponents.ENTITY_COMPONENT)) {
-            return (Component.translatable("tooltip.createbackoff.restraining_order.empty"));
-        } else if (Objects.equals(stack.get(ModItemComponents.ENTITY_COMPONENT).name(), "*")) {
+        if (Objects.equals(stack.get(ModItemComponents.ENTITY_COMPONENT).name(), "*")) {
             return (Component.translatable("tooltip.createbackoff.restraining_order.wildcard").withStyle(ChatFormatting.GREEN));
         } else {
             return (Component.translatable("tooltip.createbackoff.restraining_order.bound").withStyle(ChatFormatting.GOLD)
