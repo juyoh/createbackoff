@@ -8,8 +8,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.List;
-
 public class ModTabs {
     private static final DeferredRegister<CreativeModeTab> REGISTER =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CreateBackOff.MODID);
@@ -17,7 +15,6 @@ public class ModTabs {
             () -> CreativeModeTab.builder()
                     .title(Component.literal("Create: Back Off!"))
                     .icon(CreateBackOff.RESISTOR::asStack)
-                    .displayItems(List.of())
                     .build());
 
     public static void register(IEventBus modEventBus) {

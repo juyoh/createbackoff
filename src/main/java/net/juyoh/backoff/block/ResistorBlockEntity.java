@@ -1,6 +1,10 @@
 package net.juyoh.backoff.block;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.foundation.advancement.AdvancementBehaviour;
+import com.simibubi.create.foundation.advancement.AllAdvancements;
+import com.simibubi.create.foundation.advancement.CreateAdvancement;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import joptsimple.internal.Strings;
 import net.juyoh.backoff.CreateBackOff;
@@ -79,6 +83,9 @@ public class ResistorBlockEntity extends KineticBlockEntity {
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         tooltip.add(Component.literal(Strings.repeat(' ', getIndents(Minecraft.getInstance().font))).append(Component.translatable("tooltip.createbackoff.resistor.goggles")));
         tooltip.add(getTooltip());
+        if (isPlayerOwner(Minecraft.getInstance().player.getUUID())) {
+            tooltip.add(Component.translatable("tooltip.createbackoff.resistor.owner").withStyle(ChatFormatting.GREEN));
+        }
         return super.addToGoggleTooltip(tooltip, isPlayerSneaking);
     }
     static int getIndents(Font font) {
@@ -209,5 +216,4 @@ public class ResistorBlockEntity extends KineticBlockEntity {
             level.playSound(null, this.getBlockPos(), SoundEvents.BEACON_AMBIENT, SoundSource.BLOCKS, 1, 1);
         }
     }
-
 }

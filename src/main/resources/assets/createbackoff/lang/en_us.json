@@ -4,12 +4,15 @@
   "item.createbackoff.legal_paper": "Legal Paper",
   "item.createbackoff.restraining_order": "Restraining Order",
 
+  "item.createbackoff.resistor.tooltip.summary": "Uses rotation to block entities",
+
   "tooltip.createbackoff.restraining_order.empty": "No entity bound",
   "tooltip.createbackoff.restraining_order.bound": "Legally bound to entity: ",
   "tooltip.createbackoff.restraining_order.wildcard": "All entities except owner",
   "tooltip.createbackoff.resistor.bound": "Filtered Resistor to deter entity",
   "tooltip.createbackoff.resistor.deny": "You are not the owner of this Resistor",
   "tooltip.createbackoff.resistor.goggles": "Resistor Deters:",
+  "tooltip.createbackoff.resistor.owner": "You are the owner ✔",
 
   "createbackoff.ponder.resistor_intro.header": "Resisting Entities",
   "createbackoff.ponder.resistor_intro.text_1": "The Resistor uses rotational force to repel entities",

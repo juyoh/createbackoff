@@ -1,12 +1,16 @@
 package net.juyoh.backoff;
 
 import com.mojang.logging.LogUtils;
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.foundation.advancement.AllAdvancements;
+import com.simibubi.create.foundation.advancement.CreateAdvancement;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
+import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import net.createmod.catnip.lang.FontHelper;
@@ -34,7 +38,6 @@ import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
@@ -75,6 +78,7 @@ public class CreateBackOff {
             .properties(properties -> new Item.Properties().stacksTo(1))
             .removeTab(ModTabs.BACK_OFF.getKey()).register();
 
+
     public static Map<BlockPos, ResourceKey<Level>> resistors = new HashMap<>();
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
@@ -83,6 +87,7 @@ public class CreateBackOff {
         REGISTRATE.registerEventListeners(modEventBus);
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(CreateBackOffClient::clientSetup);
 
         // Register the Deferred Register to the mod event bus so blocks get registered
         BLOCKS.register(modEventBus);
@@ -113,6 +118,7 @@ public class CreateBackOff {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
     }
+    @SuppressWarnings("removal")
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD)
     public static class ServerModEvents {
         @SubscribeEvent

@@ -114,6 +114,7 @@ public class ResistorBlock extends KineticBlock implements IBE<ResistorBlockEnti
                 } else {
                     withBlockEntityDo(level, pos, SyncedBlockEntity::notifyUpdate);
                 }
+                addParticles(level, pos, level.random, blockEntity.calculateSize(), 320);
                 return ItemInteractionResult.SUCCESS;
             }
         }
@@ -141,9 +142,41 @@ public class ResistorBlock extends KineticBlock implements IBE<ResistorBlockEnti
             } else {
                 withBlockEntityDo(level, pos, SyncedBlockEntity::notifyUpdate);
             }
+            addParticles(level, pos, level.random, blockEntity.calculateSize(), 320);
             return InteractionResult.SUCCESS;
         }
         return super.useWithoutItem(state, level, pos, player, hitResult);
+    }
+    public void addParticles(Level level, BlockPos pos, RandomSource random, int size, int amount) {
+        if (size == 0) {
+            return;
+        }
+        double x = random.nextDouble() * 3;
+        double y = random.nextDouble() * 3;
+        double z = random.nextDouble() * 3;
+
+        for (int l = 0; l < amount / 3.5; l++) {
+            level.addParticle(
+                    new DustParticleOptions(new Vector3f(0.9f, 0.3f, 0.4f), 0.6f),
+                    pos.getX() - 0.5 + x,
+                    pos.getY() - 0.5 + y,
+                    pos.getZ() - 0.5 + z,
+                    x * size,
+                    y * size,
+                    z * size
+            );
+        }
+        for (int l = 0; l < amount; l++) {
+            level.addParticle(
+                    new DustParticleOptions(new Vector3f(0.7f, 0.4f, 0.3f), 0.3f),
+                    pos.getX() - 0.5 + x,
+                    pos.getY() - 0.5 + y,
+                    pos.getZ() - 0.5 + z,
+                    x * size * 2,
+                    y * size * 2,
+                    z * size * 2
+            );
+        }
     }
 
     @Override
@@ -180,38 +213,7 @@ public class ResistorBlock extends KineticBlock implements IBE<ResistorBlockEnti
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         super.animateTick(state, level, pos, random);
-
-        int size = ((ResistorBlockEntity) level.getBlockEntity(pos)).calculateSize();
-
-        if (size == 0) {
-            return;
-        }
-        double x = random.nextDouble() * 3;
-        double y = random.nextDouble() * 3;
-        double z = random.nextDouble() * 3;
-
-        for (int l = 0; l < 24; l++) {
-            level.addParticle(
-                    new DustParticleOptions(new Vector3f(0.9f, 0.3f, 0.4f), 0.6f),
-                    pos.getX() - 0.5 + x,
-                    pos.getY() - 0.5 + y,
-                    pos.getZ() - 0.5 + z,
-                    x * size,
-                    y * size,
-                    z * size
-            );
-        }
-        for (int l = 0; l < 64; l++) {
-            level.addParticle(
-                    new DustParticleOptions(new Vector3f(0.7f, 0.4f, 0.3f), 0.3f),
-                    pos.getX() - 0.5 + x,
-                    pos.getY() - 0.5 + y,
-                    pos.getZ() - 0.5 + z,
-                    x * size * 2,
-                    y * size * 2,
-                    z * size * 2
-            );
-        }
+        addParticles(level, pos, random, ((ResistorBlockEntity) level.getBlockEntity(pos)).calculateSize(), 64);
     }
 
 }

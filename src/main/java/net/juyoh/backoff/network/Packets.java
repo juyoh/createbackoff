@@ -22,7 +22,7 @@ public enum Packets implements BasePacketPayload.PacketTypeProvider {
                 clazz, codec
         );
     }
-
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends CustomPacketPayload> CustomPacketPayload.Type<T> getType() {
         return  (CustomPacketPayload.Type<T>) this.type.type();

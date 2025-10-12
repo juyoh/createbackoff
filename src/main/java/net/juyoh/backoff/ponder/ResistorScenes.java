@@ -10,6 +10,7 @@ import net.createmod.ponder.api.element.ParrotPose;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
+import net.juyoh.backoff.CreateBackOff;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -150,7 +152,7 @@ public class ResistorScenes {
         int slowSize = 3;
         AABB sizeSlow = AABB.ofSize(resistorPos.getCenter().add(-0.5d, -0.5d, -0.5d), (slowSize * 2) - 2, (slowSize * 2) - 2, (slowSize * 2) - 2);
         scene.overlay().chaseBoundingBoxOutline(PonderPalette.RED, resistorSelectionSlow, new AABB(resistorPos), 1);
-        scene.overlay().chaseBoundingBoxOutline(PonderPalette.RED, resistorSelectionSlow, sizeSlow, 40);
+        scene.overlay().chaseBoundingBoxOutline(PonderPalette.RED, resistorSelectionSlow, sizeSlow, 80);
 
         scene.idleSeconds(3);
 
@@ -203,6 +205,7 @@ public class ResistorScenes {
 
         BlockPos resistorPos = util.grid().at(2, 3, 3);
         BlockPos birbPos = util.grid().at(0, 7, 3);
+        BlockPos birbRestrainPos = util.grid().at(4, 1, 1);
         BlockPos itemPos = util.grid().at(1, 8, 2);
         Selection barrierSelection = util.select().fromTo(0, 4, 0, 6, 4, 6);
         Selection resistorSelection = util.select().position(resistorPos);
@@ -244,7 +247,7 @@ public class ResistorScenes {
         AABB sizeSlow = AABB.ofSize(resistorPos.getCenter().add(-0.5d, -0.5d, 0.5d), (slowSize * 2) - 2, (slowSize * 2) - 2, (slowSize * 2) - 2);
 
         scene.overlay().chaseBoundingBoxOutline(PonderPalette.RED, resistorSelectionSlow, new AABB(resistorPos), 1);
-        scene.overlay().chaseBoundingBoxOutline(PonderPalette.RED, resistorSelectionSlow, sizeSlow, 240);
+        scene.overlay().chaseBoundingBoxOutline(PonderPalette.RED, resistorSelectionSlow, sizeSlow, 520);
 
         scene.idleSeconds(2);
 
@@ -259,6 +262,49 @@ public class ResistorScenes {
         scene.special().hideElement(flappyBirb1, Direction.UP);
         scene.idle(10);
         scene.world().modifyEntities(ItemEntity.class, Entity::discard);
+
+        scene.idleSeconds(2);
+
+        scene.addKeyframe();
+
+        ElementLink<ParrotElement> flappyBirbRestrain = scene.special().createBirb(util.vector().blockSurface(birbRestrainPos.below(), Direction.UP), ParrotPose.FacePointOfInterestPose::new);
+
+        scene.idleSeconds(2);
+
+        scene.overlay().showControls(util.vector().centerOf(birbRestrainPos), Pointing.DOWN, 40).rightClick()
+                .withItem(new ItemStack(CreateBackOff.LEGAL_PAPER.asItem()));
+
+        scene.overlay().showOutlineWithText(util.select().position(birbRestrainPos), 80)
+                .text("Use Legal Paper on a mob to add it's name to the filter")
+                .pointAt(util.vector().blockSurface(birbRestrainPos, Direction.EAST)
+                        .add(-.5, .4, 0))
+                .placeNearTarget();
+
+        scene.idleSeconds(7);
+
+        scene.overlay().showOutlineWithText(util.select().position(resistorPos), 140)
+                .text("Then use the Restraining Order on the Resistor to configure it")
+                .pointAt(util.vector().blockSurface(resistorPos, Direction.UP)
+                        .add(-.8, .8, 0))
+                .placeNearTarget();
+
+        scene.overlay().showControls(util.vector().centerOf(resistorPos), Pointing.LEFT, 70).rightClick()
+                .withItem(new ItemStack(CreateBackOff.RESTRAINING_ORDER.asItem()));
+
+        scene.addKeyframe();
+
+        scene.idleSeconds(5);
+
+        ElementLink<ParrotElement> flappyBirb2 = scene.special().createBirb(util.vector().blockSurface(birbPos, Direction.UP), ParrotPose.FlappyPose::new);
+        scene.special().moveParrot(flappyBirb2, util.vector().of(0, -2, 0), 20);
+
+        scene.world().setBlock(new BlockPos(1, 4, 2), Blocks.AIR.defaultBlockState(), false);
+
+        scene.idle(10);
+
+        ElementLink<EntityElement> itemElement2 = scene.world().createItemEntity(itemPos.getBottomCenter(), new Vec3(0, -0.2, 0), new ItemStack(Items.COBBLESTONE).copyWithCount(32));
+
+        scene.idleSeconds(4);
 
         scene.addKeyframe();
         scene.markAsFinished();
