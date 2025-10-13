@@ -31,6 +31,8 @@ public class RestrainingOrderItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(getTooltip(stack));
+        if (stack.has(ModItemComponents.ENTITY_COMPONENT)) {
+            tooltipComponents.add(getTooltip(stack));
+        }
     }
 }

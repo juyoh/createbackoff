@@ -12,16 +12,19 @@
     "S": {
       "item": "minecraft:redstone_block"
     },
+    "D": {
+      "item": "create:brass_nugget"
+    },
     "N": {
-      "item": "minecraft:slime_ball"
+      "item": "minecraft:glass_pane"
     }
   },
   "pattern": [
-    "BBBBB",
-    "BANAB",
+    "ABBBA",
+    "BDNDB",
     "BNSNB",
-    "BANAB",
-    "BBBBB"
+    "BDNDB",
+    "ABBBA"
   ],
   "result": {
     "count": 1,
