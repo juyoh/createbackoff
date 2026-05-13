@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ConcurrentModificationException;
+import java.util.Objects;
 
 @Mixin(MultiPlayerGameMode.class)
 public abstract class IsBlockUseableMixin {
@@ -31,8 +32,14 @@ public abstract class IsBlockUseableMixin {
                 if (!((ResistorBlockEntity) entity).isInside(result.getBlockPos().getCenter())) {
                     continue;
                 }
-                if (((ResistorBlockEntity) entity).isPlayerOwner(player.getUUID())) {
-                    continue;
+                if (((ResistorBlockEntity) entity).filterEquals("*")) {
+                    if ((((ResistorBlockEntity) entity).isPlayerOwner(player.getUUID()))){
+                        continue;
+                    }
+                } else {
+                    if (!Objects.equals(player.getName().getString(), ((ResistorBlockEntity) entity).getFilter())) {
+                        continue;
+                    }
                 }
                 cir.setReturnValue(InteractionResult.FAIL);
                 cir.cancel();

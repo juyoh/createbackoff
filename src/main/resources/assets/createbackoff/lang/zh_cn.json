@@ -1,0 +1,31 @@
+{
+  "block.createbackoff.resistor": "实体阻拦器",
+
+  "item.createbackoff.legal_paper": "法律文件",
+  "item.createbackoff.restraining_order": "阻拦命令",
+
+  "item.createbackoff.resistor.tooltip.summary": "使用应力来阻拦实体",
+
+  "tooltip.createbackoff.restraining_order.empty": "没有实体范围",
+  "tooltip.createbackoff.restraining_order.bound": "法律阻拦实体为：",
+  "tooltip.createbackoff.restraining_order.wildcard": "除了所有者以外的全部实体",
+  "tooltip.createbackoff.resistor.bound": "过滤阻拦器来组织实体",
+  "tooltip.createbackoff.resistor.deny": "你不是这个阻拦器的所有者",
+  "tooltip.createbackoff.resistor.goggles": "阻拦器阻止：",
+  "tooltip.createbackoff.resistor.owner": "你是所有者 ✔",
+
+  "createbackoff.ponder.resistor_intro.header": "阻拦实体",
+  "createbackoff.ponder.resistor_intro.text_1": "阻拦器使用应力来阻拦实体",
+  "createbackoff.ponder.resistor_intro.text_2": "它需要从下方接入应力",
+  "createbackoff.ponder.resistor_intro.text_3": "当正确地设置后，阻拦器可以阻拦实体",
+
+  "createbackoff.ponder.resistor_speed.header": "阻拦器的大小",
+  "createbackoff.ponder.resistor_speed.text_1": "范围块的大小与应力的速度相关",
+  "createbackoff.ponder.resistor_speed.text_2": "增加它的速度时...",
+  "createbackoff.ponder.resistor_speed.text_3": "它的影响范围也会跟着扩大",
+
+  "createbackoff.ponder.resistor_filter.header": "阻拦器过滤",
+  "createbackoff.ponder.resistor_filter.text_1": "默认情况下，阻拦器会阻止除了所有者以外的任何东西",
+  "createbackoff.ponder.resistor_filter.text_2": "对着一个生物使用法律文件把它的名字加到过滤器中",
+  "createbackoff.ponder.resistor_filter.text_3": "然后在阻拦器上使用阻拦命令来配置它"
+}
